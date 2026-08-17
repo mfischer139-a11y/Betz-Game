@@ -8,189 +8,278 @@
   <style>
     * {
       box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
       margin: 0;
       font-family: Arial, sans-serif;
       overflow: hidden;
-      background: #8ed6ff;
+      background: #8fd7ff;
+      touch-action: none;
     }
 
     .game {
       position: relative;
       width: 100vw;
       height: 100vh;
-      min-height: 600px;
       overflow: hidden;
       background:
         linear-gradient(
           to bottom,
-          #79cfff 0%,
-          #b9ebff 45%,
-          #7bc95b 45%,
-          #3d8d3d 100%
+          #80d3ff 0%,
+          #c8efff 42%,
+          #74c85e 42%,
+          #4e9d48 100%
         );
     }
 
-    /* Sonne */
     .sun {
       position: absolute;
       top: 45px;
-      right: 45px;
-      width: 90px;
-      height: 90px;
+      right: 40px;
+      width: 85px;
+      height: 85px;
       border-radius: 50%;
-      background: #ffe45c;
-      box-shadow: 0 0 35px #fff09a;
+      background: #ffe66d;
+      box-shadow: 0 0 35px #fff4ad;
     }
 
-    /* Wolken */
     .cloud {
       position: absolute;
-      font-size: 75px;
-      opacity: 0.9;
+      font-size: 70px;
+      opacity: 0.85;
     }
 
     .cloud.one {
-      top: 70px;
+      top: 90px;
       left: 8%;
     }
 
     .cloud.two {
-      top: 140px;
+      top: 160px;
       right: 12%;
-      font-size: 55px;
+      font-size: 52px;
     }
 
-    /* Wald */
-    .forest {
+    .forest-back {
       position: absolute;
-      bottom: 20%;
-      width: 100%;
+      left: 0;
+      right: 0;
+      bottom: 22%;
       display: flex;
       justify-content: space-around;
-      font-size: 85px;
-      opacity: 0.95;
+      font-size: 70px;
+      opacity: 0.92;
     }
 
-    /* Weg */
     .path {
       position: absolute;
-      bottom: -80px;
+      bottom: -40px;
       left: 50%;
       transform: translateX(-50%);
-      width: 55%;
-      height: 55%;
-      background: #d8b47b;
-      clip-path: polygon(42% 0%, 58% 0%, 100% 100%, 0% 100%);
+      width: 58%;
+      height: 58%;
+      background: #d8b57a;
+      clip-path: polygon(44% 0%, 56% 0%, 100% 100%, 0% 100%);
     }
 
-    /* Startmenü */
-    .menu {
+    .bushes {
       position: absolute;
-      inset: 0;
+      bottom: 13%;
+      width: 100%;
       display: flex;
-      flex-direction: column;
+      justify-content: space-between;
+      padding: 0 20px;
+      font-size: 58px;
+    }
+
+    .hud {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      right: 15px;
+      display: flex;
+      justify-content: space-between;
       align-items: center;
-      justify-content: center;
-      padding: 20px;
-      text-align: center;
-      z-index: 10;
-      background: rgba(255,255,255,0.12);
-      backdrop-filter: blur(2px);
+      z-index: 20;
     }
 
-    .logo {
-      font-size: clamp(52px, 13vw, 105px);
-      margin: 0;
-      color: white;
-      text-shadow:
-        0 4px 0 #7849b8,
-        0 8px 18px rgba(0,0,0,0.25);
-    }
-
-    .subtitle {
-      margin: 8px 0 28px;
-      font-size: clamp(20px, 5vw, 35px);
-      color: white;
+    .title {
+      background: rgba(255,255,255,0.88);
+      border-radius: 22px;
+      padding: 10px 16px;
       font-weight: bold;
-      text-shadow: 0 3px 6px rgba(0,0,0,0.35);
+      color: #5e3c94;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.18);
     }
 
-    .characters {
-      font-size: clamp(90px, 25vw, 170px);
-      margin-bottom: 20px;
-      filter: drop-shadow(0 8px 8px rgba(0,0,0,0.25));
-    }
-
-    .start-button {
-      border: none;
-      border-radius: 40px;
-      padding: 20px 38px;
-      font-size: clamp(23px, 6vw, 34px);
+    .quest {
+      background: rgba(255,255,255,0.88);
+      border-radius: 22px;
+      padding: 10px 14px;
+      font-size: 14px;
       font-weight: bold;
-      color: white;
-      background: linear-gradient(135deg, #ff66c4, #8d5cff);
-      box-shadow: 0 8px 0 #6337a5, 0 12px 25px rgba(0,0,0,0.25);
-      cursor: pointer;
+      color: #2e6630;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.18);
     }
 
-    .start-button:active {
-      transform: translateY(5px);
-      box-shadow: 0 3px 0 #6337a5;
+    .character {
+      position: absolute;
+      font-size: 100px;
+      z-index: 8;
+      user-select: none;
+      transform-origin: center bottom;
+      transition: transform 0.15s ease;
     }
 
-    /* Erste Spielszene */
-    .story {
+    #lucy {
+      left: 12%;
+      bottom: 16%;
+    }
+
+    #lina {
+      right: 13%;
+      bottom: 17%;
+      font-size: 112px;
+    }
+
+    .riding #lucy {
+      display: none;
+    }
+
+    .riding #lina {
+      font-size: 126px;
+    }
+
+    .rider {
       display: none;
       position: absolute;
-      inset: 0;
-      z-index: 20;
-      align-items: center;
-      justify-content: flex-end;
-      flex-direction: column;
-      padding: 25px;
+      left: 18px;
+      top: -58px;
+      font-size: 64px;
     }
 
-    .story-character {
-      font-size: 150px;
-      margin-bottom: 5px;
+    .riding #lina .rider {
+      display: block;
     }
 
     .speech {
-      width: min(650px, 95%);
-      padding: 22px;
-      margin-bottom: 35px;
-      border-radius: 30px;
+      position: absolute;
+      left: 50%;
+      bottom: 31%;
+      transform: translateX(-50%);
+      width: min(520px, 90%);
+      padding: 18px 22px;
       background: white;
-      font-size: clamp(21px, 5vw, 30px);
-      font-weight: bold;
+      border-radius: 26px;
       text-align: center;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+      font-size: 20px;
+      font-weight: bold;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.22);
+      z-index: 15;
     }
 
-    .continue-button {
+    .speech.hidden {
+      display: none;
+    }
+
+    .action-button {
+      position: absolute;
+      right: 22px;
+      bottom: 110px;
+      z-index: 30;
       border: none;
+      border-radius: 30px;
+      padding: 16px 22px;
+      font-size: 20px;
+      font-weight: bold;
+      color: white;
+      background: linear-gradient(135deg, #ff5fbf, #8d5cff);
+      box-shadow: 0 7px 0 #6337a5;
+      display: none;
+    }
+
+    .action-button:active {
+      transform: translateY(4px);
+      box-shadow: 0 3px 0 #6337a5;
+    }
+
+    .controls {
+      position: absolute;
+      left: 18px;
+      bottom: 25px;
+      width: 175px;
+      height: 150px;
+      z-index: 30;
+    }
+
+    .control {
+      position: absolute;
+      width: 58px;
+      height: 58px;
       border-radius: 50%;
-      width: 75px;
-      height: 75px;
-      margin-top: 18px;
-      font-size: 38px;
-      background: #ffdd55;
-      cursor: pointer;
+      border: 3px solid rgba(255,255,255,0.9);
+      background: rgba(255,255,255,0.55);
+      font-size: 28px;
+      font-weight: bold;
+      color: #5c3d91;
+      backdrop-filter: blur(4px);
     }
 
-    .sparkle {
-      animation: sparkle 1.5s infinite alternate;
+    .up {
+      left: 58px;
+      top: 0;
     }
 
-    @keyframes sparkle {
-      from {
-        transform: scale(1);
+    .left {
+      left: 0;
+      top: 58px;
+    }
+
+    .right {
+      right: 0;
+      top: 58px;
+    }
+
+    .down {
+      left: 58px;
+      bottom: 0;
+    }
+
+    .hint {
+      position: absolute;
+      bottom: 18px;
+      right: 18px;
+      background: rgba(255,255,255,0.8);
+      border-radius: 20px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: bold;
+      color: #4c4c4c;
+      z-index: 15;
+    }
+
+    @media (max-width: 500px) {
+      .character {
+        font-size: 86px;
       }
-      to {
-        transform: scale(1.12);
+
+      #lina {
+        font-size: 100px;
+      }
+
+      .speech {
+        bottom: 36%;
+        font-size: 18px;
+      }
+
+      .title {
+        font-size: 14px;
+      }
+
+      .quest {
+        font-size: 12px;
       }
     }
   </style>
@@ -198,109 +287,161 @@
 
 <body>
 
-  <div class="game">
+  <div class="game" id="game">
 
     <div class="sun"></div>
-
     <div class="cloud one">☁️</div>
     <div class="cloud two">☁️</div>
 
-    <div class="forest">
+    <div class="forest-back">
       <span>🌲</span>
       <span>🌳</span>
       <span>🌲</span>
       <span>🌳</span>
       <span>🌲</span>
+      <span>🌳</span>
     </div>
 
     <div class="path"></div>
 
-    <!-- STARTBILDSCHIRM -->
-    <div class="menu" id="menu">
-
-      <h1 class="logo">✨ BETZ ✨</h1>
-
-      <div class="subtitle">
-        Lucys magisches Tierabenteuer
-      </div>
-
-      <div class="characters sparkle">
-        👧🏼 🦄
-      </div>
-
-      <button class="start-button" onclick="startGame()">
-        ▶ Abenteuer starten
-      </button>
-
+    <div class="bushes">
+      <span>🌿🌸</span>
+      <span>🌼🌿</span>
     </div>
 
-    <!-- ERSTE SZENE -->
-    <div class="story" id="story">
+    <div class="hud">
+      <div class="title">✨ BETZ</div>
+      <div class="quest" id="quest">Aufgabe: Finde Lina 🦄</div>
+    </div>
 
-      <div class="story-character">
-        👧🏼 🦄
-      </div>
+    <div id="lucy" class="character">👧🏼</div>
 
-      <div class="speech" id="speech">
-        Hallo! Ich bin Lucy und das ist Lina. 🦄
-        <br><br>
-        Komm mit uns in den Wald!
-        
-        <br>
+    <div id="lina" class="character">
+      <span class="rider">👧🏼</span>
+      🦄
+    </div>
 
-        <button class="continue-button" onclick="nextStory()">
-          ➜
-        </button>
-      </div>
+    <div class="speech" id="speech">
+      Hallo Lucy! Laufe zu Lina. 🦄
+    </div>
 
+    <button class="action-button" id="actionButton" onclick="toggleRide()">
+      Aufsteigen 🦄
+    </button>
+
+    <div class="controls">
+      <button class="control up" onpointerdown="move('up')">⬆️</button>
+      <button class="control left" onpointerdown="move('left')">⬅️</button>
+      <button class="control right" onpointerdown="move('right')">➡️</button>
+      <button class="control down" onpointerdown="move('down')">⬇️</button>
+    </div>
+
+    <div class="hint">
+      Bewege Lucy mit den Pfeilen
     </div>
 
   </div>
 
   <script>
-    let storyStep = 0;
+    const game = document.getElementById("game");
+    const lucy = document.getElementById("lucy");
+    const lina = document.getElementById("lina");
+    const actionButton = document.getElementById("actionButton");
+    const quest = document.getElementById("quest");
+    const speech = document.getElementById("speech");
 
-    function startGame() {
-      document.getElementById("menu").style.display = "none";
-      document.getElementById("story").style.display = "flex";
+    let riding = false;
+
+    let lucyX = window.innerWidth * 0.12;
+    let lucyY = window.innerHeight * 0.16;
+
+    let linaX = window.innerWidth * 0.72;
+    let linaY = window.innerHeight * 0.17;
+
+    function updatePositions() {
+      if (!riding) {
+        lucy.style.left = lucyX + "px";
+        lucy.style.bottom = lucyY + "px";
+      }
+
+      lina.style.left = linaX + "px";
+      lina.style.bottom = linaY + "px";
+      lina.style.right = "auto";
     }
 
-    function nextStory() {
+    function move(direction) {
+      const step = riding ? 26 : 18;
 
-      const speech = document.getElementById("speech");
+      let targetX = riding ? linaX : lucyX;
+      let targetY = riding ? linaY : lucyY;
 
-      storyStep++;
+      if (direction === "left") targetX -= step;
+      if (direction === "right") targetX += step;
+      if (direction === "up") targetY += step;
+      if (direction === "down") targetY -= step;
 
-      if (storyStep === 1) {
-        speech.innerHTML = `
-          🐦 Oh! Hörst du das Zwitschern?
-          <br><br>
-          Ich glaube, die Vögel brauchen unsere Hilfe!
-          <br>
-          <button class="continue-button" onclick="nextStory()">➜</button>
-        `;
+      const maxX = window.innerWidth - 110;
+      const maxY = window.innerHeight * 0.42;
+      const minY = 40;
+
+      targetX = Math.max(0, Math.min(maxX, targetX));
+      targetY = Math.max(minY, Math.min(maxY, targetY));
+
+      if (riding) {
+        linaX = targetX;
+        linaY = targetY;
+      } else {
+        lucyX = targetX;
+        lucyY = targetY;
       }
 
-      else if (storyStep === 2) {
-        speech.innerHTML = `
-          🐦 🐤 🐦 🐤
-          <br><br>
-          Die Vögel sind völlig durcheinander!
-          <br><br>
-          Bald beginnt hier unser erstes Sortierspiel. ✨
-          <br>
-          <button class="continue-button" onclick="nextStory()">⭐</button>
-        `;
+      updatePositions();
+      checkNearLina();
+    }
+
+    function checkNearLina() {
+      if (riding) {
+        actionButton.style.display = "block";
+        return;
       }
 
-      else {
-        speech.innerHTML = `
-          🌈 Ende unserer ersten kleinen Demo!
-          <br><br>
-          Lucy und Lina warten auf ihr nächstes Abenteuer. 🦄
-        `;
+      const dx = lucyX - linaX;
+      const dy = lucyY - linaY;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+
+      if (distance < 145) {
+        actionButton.style.display = "block";
+        speech.classList.remove("hidden");
+        speech.innerHTML = "Da ist Lina! 🦄<br>Du kannst jetzt aufsteigen.";
+        quest.innerHTML = "Aufgabe geschafft: Lina gefunden ✨";
+      } else {
+        actionButton.style.display = "none";
       }
     }
+
+    function toggleRide() {
+      riding = !riding;
+      game.classList.toggle("riding", riding);
+
+      if (riding) {
+        linaX = lucyX;
+        linaY = lucyY;
+        updatePositions();
+
+        actionButton.innerHTML = "Absteigen 👧🏼";
+        quest.innerHTML = "Neue Aufgabe: Reite durch den Wald 🌲";
+        speech.innerHTML = "Juhu! Lucy reitet jetzt auf Lina! 🦄✨";
+      } else {
+        lucyX = linaX - 65;
+        lucyY = linaY;
+        updatePositions();
+
+        actionButton.innerHTML = "Aufsteigen 🦄";
+        speech.innerHTML = "Lucy ist abgestiegen.";
+      }
+    }
+
+    updatePositions();
   </script>
 
 </body>
