@@ -146,6 +146,11 @@ body {
 
 .riding #lucy {
   display: block;
+  z-index: 12;
+  position: absolute;
+  left: 50%;
+  bottom: 17%;
+  transform: translateX(-50%);
 }
 
 .riding #lina {
