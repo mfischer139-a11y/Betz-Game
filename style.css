@@ -125,9 +125,11 @@ body {
   transition: transform 0.15s ease;
 }
 
-#lucy {
-  left: 12%;
-  bottom: 16%;
+#lucy img {
+  width: 95px;
+  height: auto;
+  display: block;
+  pointer-events: none;
 }
 
 #lina {
