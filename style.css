@@ -145,7 +145,7 @@ body {
 }
 
 .riding #lucy {
-  display: none;
+  display: block;
 }
 
 .riding #lina {
