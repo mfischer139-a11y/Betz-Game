@@ -137,6 +137,12 @@ body {
   bottom: 17%;
   font-size: 112px;
 }
+#lina img {
+  width: 150px;
+  height: auto;
+  display: block;
+  pointer-events: none;
+}
 
 .riding #lucy {
   display: none;
